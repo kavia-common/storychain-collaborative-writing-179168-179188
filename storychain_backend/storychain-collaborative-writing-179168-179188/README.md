@@ -1,21 +1,21 @@
 # storychain-collaborative-writing-179168-179188
 
-Backend (Express) now exposes:
-- GET /               Health
-- POST /auth/signup   Signup
-- POST /auth/login    Login
-- POST /auth/logout   Logout (stateless)
-- GET  /auth/me       Current user (Bearer)
-- GET  /stories       List stories
-- POST /stories       Create story (Bearer)
-- GET  /stories/:id   Get story with paragraphs
-- PATCH /stories/:id  Update story (Bearer)
-- GET  /stories/:storyId/paragraphs       List paragraphs
-- POST /stories/:storyId/paragraphs       Add paragraph (Bearer)
-- POST /paragraphs/:paragraphId/reactions Add reaction (Bearer)
-- DELETE /paragraphs/:paragraphId/reactions Remove reaction (Bearer)
-- POST /ai/stories/:storyId/suggest       AI suggestion (uses OPENAI_* if present)
-- POST /ai/stories/:storyId/edit          AI edit (uses OPENAI_* if present)
+Backend (Express) now exposes (mounted at both / and /api for compatibility):
+- GET / and /api/               Health
+- POST /auth/signup and /api/auth/signup   Signup
+- POST /auth/login  and /api/auth/login    Login
+- POST /auth/logout and /api/auth/logout   Logout (stateless)
+- GET  /auth/me     and /api/auth/me       Current user (Bearer)
+- GET  /stories     and /api/stories       List stories
+- POST /stories     and /api/stories       Create story (Bearer)
+- GET  /stories/:id and /api/stories/:id   Get story with paragraphs
+- PATCH /stories/:id and /api/stories/:id  Update story (Bearer)
+- GET  /stories/:storyId/paragraphs and /api/stories/:storyId/paragraphs       List paragraphs
+- POST /stories/:storyId/paragraphs and /api/stories/:storyId/paragraphs       Add paragraph (Bearer)
+- POST /paragraphs/:paragraphId/reactions and /api/paragraphs/:paragraphId/reactions Add reaction (Bearer)
+- DELETE /paragraphs/:paragraphId/reactions and /api/paragraphs/:paragraphId/reactions Remove reaction (Bearer)
+- POST /ai/stories/:storyId/suggest and /api/ai/stories/:storyId/suggest       AI suggestion (uses OPENAI_* if present)
+- POST /ai/stories/:storyId/edit and /api/ai/stories/:storyId/edit             AI edit (uses OPENAI_* if present)
 
 Docs: /docs
 OpenAPI: storychain_backend/interfaces/openapi.json

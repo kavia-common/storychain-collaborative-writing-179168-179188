@@ -9,6 +9,7 @@ Backend (Express)
   - JWT_SECRET=...
   - CORS_FRONTEND_ORIGIN=http://localhost:3000 (also set FRONTEND_URL for current code)
   - Optional: OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_MODEL
+  - Optional: API_BASE_PATH=/api (defaults to /api). Routes are mounted at both / and API_BASE_PATH for compatibility.
 
 Frontend (React)
 - Copy storychain_frontend/.env.example to storychain_frontend/.env and set:

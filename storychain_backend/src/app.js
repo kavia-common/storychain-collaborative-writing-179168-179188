@@ -64,10 +64,18 @@ app.use('/docs', swaggerUi.serve, (req, res, next) => {
   swaggerUi.setup(dynamicSpec)(req, res, next);
 });
 
-// Parse JSON request body
+ // Parse JSON request body
 app.use(express.json({ limit: '1mb' }));
 
-// Mount routes
+// Mount routes at both a configurable API base path and at root for backward compatibility.
+// This ensures clients using /api/* or root paths both work.
+const apiBasePath = process.env.API_BASE_PATH || '/api';
+if (apiBasePath !== '/' && apiBasePath !== '') {
+  console.log(`[routes] Mounting API routes at '${apiBasePath}' and '/'`);
+  app.use(apiBasePath, routes);
+} else {
+  console.log('[routes] API_BASE_PATH resolved to root; mounting at \'/\' only');
+}
 app.use('/', routes);
 
 // Error handling middleware
