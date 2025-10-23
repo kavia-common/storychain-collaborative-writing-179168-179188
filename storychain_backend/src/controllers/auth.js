@@ -11,16 +11,20 @@ class AuthController {
     try {
       const { email, username, password, displayName } = req.body || {};
       if (!email || !username || !password) {
+        console.warn('[auth.signup] Missing fields', { hasEmail: !!email, hasUsername: !!username, hasPassword: !!password });
         return res.status(400).json({ error: 'email, username and password are required' });
       }
+      console.log('[auth.signup] Checking existing user', { email, username });
       const existing = await query(
         'SELECT id FROM users WHERE email = $1 OR username = $2',
         [email, username]
       );
       if (existing.rows.length > 0) {
+        console.warn('[auth.signup] Conflict: email or username already exists');
         return res.status(409).json({ error: 'Email or username already exists' });
       }
       const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
+      console.log('[auth.signup] Inserting new user');
       const result = await query(
         `INSERT INTO users (email, username, password_hash, display_name)
          VALUES ($1, $2, $3, $4)
@@ -31,7 +35,12 @@ class AuthController {
       const token = signToken({ id: user.id, username: user.username });
       return res.status(201).json({ user, token });
     } catch (err) {
-      console.error('[auth.signup] error', err);
+      // Surface common DB errors better during signup debugging
+      if (err && err.code) {
+        console.error('[auth.signup] DB error', { code: err.code, detail: err.detail, message: err.message });
+      } else {
+        console.error('[auth.signup] error', err);
+      }
       return res.status(500).json({ error: 'Internal Server Error' });
     }
   }

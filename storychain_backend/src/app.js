@@ -7,8 +7,22 @@ const swaggerSpec = require('../swagger');
 // Initialize express app
 const app = express();
 
-// Configure CORS: allow frontend origin if provided, otherwise *
-const allowedOrigin = process.env.FRONTEND_URL || '*';
+/**
+ * Configure CORS:
+ * - Prefer CORS_FRONTEND_ORIGIN
+ * - Fallback to FRONTEND_URL
+ * - Default to '*'
+ */
+const allowedOrigin =
+  process.env.CORS_FRONTEND_ORIGIN ||
+  process.env.FRONTEND_URL ||
+  '*';
+
+if (!process.env.CORS_FRONTEND_ORIGIN && process.env.FRONTEND_URL) {
+  console.warn('[cors] Using deprecated FRONTEND_URL; please set CORS_FRONTEND_ORIGIN.');
+}
+console.log(`[cors] Allowed origin: ${allowedOrigin}`);
+
 app.use(cors({
   origin: allowedOrigin,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
