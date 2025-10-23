@@ -1,6 +1,7 @@
 const cors = require('cors');
 const express = require('express');
 const routes = require('./routes');
+const authRouter = require('./routes/auth');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('../swagger');
 
@@ -73,10 +74,15 @@ const apiBasePath = process.env.API_BASE_PATH || '/api';
 if (apiBasePath !== '/' && apiBasePath !== '') {
   console.log(`[routes] Mounting API routes at '${apiBasePath}' and '/'`);
   app.use(apiBasePath, routes);
+  // Explicitly mount auth sub-router at /api/auth as well for clarity
+  app.use(`${apiBasePath}/auth`, authRouter);
 } else {
   console.log('[routes] API_BASE_PATH resolved to root; mounting at \'/\' only');
 }
+// Mount root-level routes
 app.use('/', routes);
+// Explicitly mount auth sub-router at /auth
+app.use('/auth', authRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
