@@ -20,9 +20,10 @@ Backend (Express) now exposes:
 Docs: /docs
 OpenAPI: storychain_backend/interfaces/openapi.json
 
-Environment variables used (create a .env in the backend root):
+Environment variables used (create a .env in the backend root or copy from .env.example):
 - PORT (default 3001)
-- FRONTEND_URL (for CORS)
+- FRONTEND_URL (for CORS; currently used by code)
+- CORS_FRONTEND_ORIGIN (preferred env var name for CORS; keep in sync with FRONTEND_URL until code is updated)
 - DATABASE_URL (Postgres)
 - JWT_SECRET, JWT_EXPIRES_IN
 - BCRYPT_SALT_ROUNDS
@@ -30,3 +31,8 @@ Environment variables used (create a .env in the backend root):
 - PGSSLMODE (when needed)
 
 To regenerate OpenAPI: npm run openapi from storychain_backend directory.
+
+Frontend wiring:
+- Frontend must set REACT_APP_API_BASE_URL to point to this backend (e.g., http://localhost:3001).
+- Backend CORS origin should match the frontend URL (CORS_FRONTEND_ORIGIN/FRONTEND_URL).
+- See .env.example files in both frontend and backend folders for quick setup.
